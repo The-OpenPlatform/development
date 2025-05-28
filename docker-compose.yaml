@@ -1,0 +1,92 @@
+services:
+  # Development service (uses air for live reloading)
+  backend-dev:
+    build:
+      context: ./backend
+      target: development
+    ports:
+      - "${BACKEND_PORT:-3000}:3000"
+    volumes:
+      - ./backend:/app
+      - /app/tmp
+    environment:
+      DB_HOST: ${DATABASE_HOST:-database}
+      DB_PORT: ${DATABASE_PORT:-5432}
+      DB_USER: ${DATABASE_USER:-postgres}
+      DB_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      DB_NAME: ${DATABASE_NAME:-openplatform}
+    networks:
+      - openplatform-network
+    profiles:
+      - dev
+
+  # Production service (builds and runs the backend)
+  backend-prod:
+    build:
+      context: ./backend
+      target: production
+    ports:
+      - "${BACKEND_PORT:-3000}:3000"
+    environment:
+      DB_HOST: ${DATABASE_HOST:-database}
+      DB_PORT: ${DATABASE_PORT:-5432}
+      DB_USER: ${DATABASE_USER:-postgres}
+      DB_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      DB_NAME: ${DATABASE_NAME:-openplatform}
+    networks:
+      - openplatform-network
+    profiles:
+      - prod
+
+  frontend-dev:
+    build:
+      context: ./frontend
+      target: development
+    ports:
+      - "${FRONTEND_PORT:-8080}:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      # VITE_BACKEND_URL: "http://backend-dev:${BACKEND_PORT:-3000}" Think of how to make this possible
+      VITE_BACKEND_URL: "http://127.0.0.1:${BACKEND_PORT:-3000}"
+    networks:
+      - openplatform-network
+    profiles:
+      - dev
+
+  frontend-prod:
+    build:
+      context: ./frontend
+      target: production
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    environment:
+      # VITE_BACKEND_URL: "http://backend-prod:${BACKEND_PORT:-3000}" Think of how to make this possible
+      VITE_BACKEND_URL: "http://127.0.0.1:${BACKEND_PORT:-3000}"
+    networks:
+      - openplatform-network
+    profiles:
+      - prod
+  
+  database:
+    build:
+      context: ./database
+      # target: production
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      POSTGRES_DB: ${DATABASE_NAME:-openplatform}
+    ports:
+      - "${DATABASE_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - openplatform-network
+
+volumes:
+  pgdata:
+
+networks:
+  openplatform-network:
+    driver: bridge
