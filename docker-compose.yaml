@@ -6,6 +6,7 @@ services:
       target: development
     ports:
       - "${BACKEND_PORT:-3000}:3000"
+      - "${GRPC_PORT:-50051}:50051"
     volumes:
       - ./backend:/app
       - /app/tmp
@@ -27,6 +28,7 @@ services:
       target: production
     ports:
       - "${BACKEND_PORT:-3000}:3000"
+      - "${GRPC_PORT:-50051}:50051"
     environment:
       DB_HOST: ${DATABASE_HOST:-database}
       DB_PORT: ${DATABASE_PORT:-5432}
