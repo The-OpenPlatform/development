@@ -15,7 +15,7 @@ services:
       DB_PORT: ${DATABASE_PORT:-5432}
       DB_USER: ${DATABASE_USER:-postgres}
       DB_PASSWORD: ${DATABASE_PASSWORD:-postgres}
-      DB_NAME: ${DATABASE_NAME:-openplatform}
+      DB_NAME: ${DATABASE_NAME:-topp-backend}
     networks:
       - openplatform-network
     profiles:
@@ -34,7 +34,7 @@ services:
       DB_PORT: ${DATABASE_PORT:-5432}
       DB_USER: ${DATABASE_USER:-postgres}
       DB_PASSWORD: ${DATABASE_PASSWORD:-postgres}
-      DB_NAME: ${DATABASE_NAME:-openplatform}
+      DB_NAME: ${DATABASE_NAME:-topp-backend}
     networks:
       - openplatform-network
     profiles:
@@ -78,7 +78,7 @@ services:
     environment:
       POSTGRES_USER: ${DATABASE_USER:-postgres}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
-      POSTGRES_DB: ${DATABASE_NAME:-openplatform}
+      POSTGRES_DB: ${DATABASE_NAME:-topp-backend}
     ports:
       - "${DATABASE_PORT:-5432}:5432"
     volumes:
