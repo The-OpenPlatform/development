@@ -1,0 +1,12 @@
+[submodule "frontend"]
+	path = frontend
+	url = git@github.com:The-OpenPlatform/frontend.git
+	branch = master
+[submodule "backend"]
+	path = backend
+	url = git@github.com:The-OpenPlatform/backend.git
+	branch = master
+[submodule "database"]
+	path = database
+	url = git@github.com:The-OpenPlatform/database.git
+	branch = master
